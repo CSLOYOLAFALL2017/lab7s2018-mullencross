@@ -1,0 +1,63 @@
+Ethan Mullen/Natalie Cross Lab 7 Algorithm
+CS151.01
+3/23/18
+
+1. 
+#Functions's purpose: read in a file name from the user and return it once they give one that exists
+#Parameters: None
+#Return: file name
+
+def input_function():
+    file = input("Please enter the input file: ")
+    while file != "movies.csv":
+        file = input("Please enter the input file: ")
+    try:
+        movies_file = open("movies.csv", "r")
+    except FileNotFoundError:
+        print("Sorry, the file does not exist.")
+    return file
+
+2. 
+#Function's purpose: Process the file
+#Parameters: file name of file to read from
+#Return: The maximum profit
+
+def profit(filename):
+    max_profit = 0
+    movies_file = open("movies.csv", "r")
+    for line in movies_file:
+        release_date, movie_title, budget, gross = line.split(",")
+        budget = float(budget)
+        gross = float(gross)
+        if (gross - budget) > max_profit:
+            max_profit = gross - budget
+            max_profit_movie = movie_title
+    return str(max_profit_movie) + ": $" + str(max_profit)
+
+3.
+#Function's purpose: Process the file
+#Parameters: file name of file to read from, file name of file to write to
+#Return: None
+
+def writing(file_from, file_to):
+    movies_file_new = open(file_to, "w")
+    file = open(file_from, "r")
+    #Use a for loop to process each line
+    for line in file:
+        release_date, movie_title, budget, gross = line.split(",")
+        budget = float(budget)
+        gross = float(gross)
+        profit = gross - budget
+        print(release_date, ",", movie_title, ",", "Profit = ", profit, sep = "", file = movies_file_new)
+
+4. 
+#Function's purpose: main
+#Parameters: None
+#Return: None
+
+def main():
+    print("This program will calculate the maximum profit for a film within an input file.")
+    input_function()
+    print("The movie with the maximum profit is: ", profit("test.csv"))
+    writing("movies.csv", "moviesnew.csv")
+main()
